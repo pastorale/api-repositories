@@ -13,9 +13,11 @@ class PositionRepository extends EntityRepository
      */
     public function findOneByVerificationCode($orgCode, $userCode)
     {
-        $position = $this->createQueryBuilder('p')->join('p.employee', 'u', 'WITH', 'u.code = ?1')
+        $queryBuilder = $this->createQueryBuilder('p');
+        $position = $queryBuilder->join('p.employee', 'u', 'WITH', 'u.code = ?1')
             ->join('p.employer', 'o', 'WITH', 'o.code = ?2')
-            ->setParameter(1, $userCode)->setParameter(2, $orgCode);
+            ->where($queryBuilder->expr()->like('p.active', '?3'))
+            ->setParameters(array(1 => $userCode, 2 => $orgCode, 3 => true));
         return $position->getQuery()->setMaxResults(1)->getOneOrNullResult();
     }
 }
