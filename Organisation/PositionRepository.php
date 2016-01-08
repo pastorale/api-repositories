@@ -19,6 +19,7 @@ class PositionRepository extends EntityRepository
             ->where($queryBuilder->expr()->like('p.enabled', '?3'))
             ->andWhere($queryBuilder->expr()->like('u.enabled', '?3'))
             ->andWhere($queryBuilder->expr()->like('o.enabled', '?3'))
+            ->andWhere($queryBuilder->expr()->like('p.enabled', '?3'))
             ->andWhere($queryBuilder->expr()->like('u.locked', '?4'))
             ->setParameters(array(1 => $userCode, 2 => $orgCode, 3 => true, 4 => false));
 //        $sql = $position->getQuery()->getSQL();
