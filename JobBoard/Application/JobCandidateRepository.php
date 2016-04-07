@@ -2,9 +2,9 @@
 namespace AppBundle\Repositories\JobBoard\Application;
 
 use AppBundle\Entity\Organisation\Position;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Services\Core\Framework\BaseRepository;
 
-class JobCandidateRepository extends EntityRepository
+class JobCandidateRepository extends BaseRepository
 {
     /**
      * @param $orgCode
@@ -25,4 +25,6 @@ class JobCandidateRepository extends EntityRepository
 //        $sql = $position->getQuery()->getSQL();
         return $position->getQuery()->setMaxResults(1)->getOneOrNullResult();
     }
+
+
 }
