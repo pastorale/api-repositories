@@ -15,7 +15,7 @@ class PositionRepository extends EntityRepository
      * @param Criteria|null $criteria
      * @return Position|null
      */
-    public function findOneByEmployer(User $user, Organisation $organisation, Criteria $criteria = null)
+    public function findOneByEmployeeEmployer(User $user, Organisation $organisation, Criteria $criteria = null)
     {
         if ($criteria === null) {
             $criteria = Criteria::create();
