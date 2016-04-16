@@ -8,8 +8,11 @@ use Doctrine\Common\Collections\Criteria;
 
 class CandidateReviewerRepository extends BaseRepository
 {
-    public function findOneByCandidatePosition(JobCandidate $candidate, Position $position, Criteria $criteria = null)
+    public function findOneByCandidatePosition(JobCandidate $candidate, Position $position = null, Criteria $criteria = null)
     {
+        if ($position === null) {
+            return null;
+        }
         if ($criteria === null) {
             $criteria = Criteria::create();
         }
@@ -17,11 +20,7 @@ class CandidateReviewerRepository extends BaseRepository
             ->andWhere(Criteria::expr()->eq("position", $position))
             ->setFirstResult(0)
             ->setMaxResults(1);
-// todo
-        /**
-         *  CandidateReviewerRepository
-         * HATEOAS service-userRetriever-getLoggedInUser-getPosition
-         */
+
         $reviewers = $candidate->getReviewers()->matching($criteria);
         return $reviewers->get(0);
 
