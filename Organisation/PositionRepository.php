@@ -17,16 +17,24 @@ class PositionRepository extends EntityRepository
      */
     public function findOneByEmployeeEmployer(User $user, Organisation $organisation = null, Criteria $criteria = null)
     {
-        if ($organisation === null) {
-            return null;
-        }
         if ($criteria === null) {
             $criteria = Criteria::create();
         }
-        $criteria
-            ->andWhere(Criteria::expr()->eq("employer", $organisation))
-            ->setFirstResult(0)
-            ->setMaxResults(1);
+        if ($organisation === null) {
+            $criteria->andWhere(Criteria::expr()->eq("enabled", true))
+                ->andWhere(Criteria::expr()->eq("default", true))
+                ->setFirstResult(0)
+                ->setMaxResults(1);
+        } else {
+            if (!$organisation->isEnabled()) {
+                return null;
+            }
+            $criteria
+                ->andWhere(Criteria::expr()->eq("employer", $organisation))
+                ->andWhere(Criteria::expr()->eq("enabled", true))
+                ->setFirstResult(0)
+                ->setMaxResults(1);
+        }
         $positions = $user->getPositions()->matching($criteria);
         return $positions->get(0);
     }
