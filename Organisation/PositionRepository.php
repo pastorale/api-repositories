@@ -22,9 +22,11 @@ class PositionRepository extends EntityRepository
         }
         if ($organisation === null) {
             $criteria->andWhere(Criteria::expr()->eq("enabled", true))
-                ->andWhere(Criteria::expr()->eq("defaultPos", true))
                 ->setFirstResult(0)
                 ->setMaxResults(1);
+            if ($user->getPositions()->count() > 1) {
+                $criteria->andWhere(Criteria::expr()->eq("defaultPos", true));
+            }
         } else {
             if (!$organisation->isEnabled()) {
                 return null;
