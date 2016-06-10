@@ -24,7 +24,7 @@ class UserGroupACERepository extends EntityRepository
             $qb->andWhere('ace INSTANCE OF :childClassName')
                 ->setParameter(':childClassName', $childClassname);
         }
-//        return $orgQB->getQuery()->setMaxResults(1)->getOneOrNullResult();
-        return null;
+        return $qb->getQuery()->setMaxResults(1)->getOneOrNullResult();
+//        return null;
     }
 }
