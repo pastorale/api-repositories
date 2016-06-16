@@ -22,13 +22,14 @@ class UserGroupACERepository extends EntityRepository
         $qb->where($expr->like('ace.attributes', ':attribute'))
             ;
         if($groups->count()>0) {
-            $qb->andWhere( $expr->in( 'ace.group', $groups->getValues() ) );
+            $qb->andWhere( $expr->in( 'ace.userGroup', ':groups' ) );
         }
         if ($childClassname !== null) {
             $qb->andWhere('ace INSTANCE OF :childClassName')
                 ->setParameter(':childClassName', $childClassname);
         }
         $qb->setParameter('attribute','%[' . $attribute . ']%');
+        $qb->setParameter( 'groups', $groups->getValues());
         return $qb->getQuery()->setMaxResults(1)->getOneOrNullResult();
 //        return null;
     }
