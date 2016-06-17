@@ -19,17 +19,23 @@ class UserGroupACERepository extends EntityRepository
         $qb = $this->createQueryBuilder('ace');
         $expr = $qb->expr();
 
-        $qb->where($expr->like('ace.attributes', ':attribute'))
-            ;
+        $qb->where($expr->like('ace.attributes',$qb->expr()->literal('%['.$attribute.']%')));
+//        $qb->setParameter('attribute','%[' . $attribute . ']%');
+//        $qb->setParameter('attribute',$qb->expr()->literal('%['.$attribute.']%'));
+
         if($groups->count()>0) {
             $qb->andWhere( $expr->in( 'ace.userGroup', ':groups' ) );
+            $qb->setParameter( 'groups', $groups->getValues());
+
         }
         if ($childClassname !== null) {
-            $qb->andWhere('ace INSTANCE OF :childClassName')
-                ->setParameter(':childClassName', $childClassname);
+            $qb->andWhere('ace INSTANCE OF '.$childClassname);
+            // eg: AppBundle\ACEEntities\Organisation\Handbook\HandbookUserGroupACE
+//                ->setParameter('childClassName', $childClassname);
         }
-        $qb->setParameter('attribute','%[' . $attribute . ']%');
-        $qb->setParameter( 'groups', $groups->getValues());
+
+        $x = $qb->getQuery();
+        $sql = $x->getSQL();
         return $qb->getQuery()->setMaxResults(1)->getOneOrNullResult();
 //        return null;
     }
