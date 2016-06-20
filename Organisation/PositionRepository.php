@@ -43,7 +43,7 @@ class PositionRepository extends EntityRepository
 
     /**
      * @param $orgCode
-     * @param $userCode
+     * @param $userCode User
      * @return Position
      */
     public function findOneByVerificationCode($orgCode, $userCode)
