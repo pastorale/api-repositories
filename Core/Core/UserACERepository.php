@@ -12,7 +12,7 @@ class UserACERepository extends EntityRepository
      * @param $user
      * @param $childClassname
      */
-    public function findByAttributeUser($user, $childClassname = null)
+    public function findByAttributeUser($user, $childClassname = null,$allowed)
     {
         //return HandbookUserACE
     }
